@@ -1,4 +1,10 @@
 <div id="<%= dom_id contact %>">
+  <% if contact.avatar.representable? %>
+    <p>
+      <%= image_tag contact.avatar.representation(resize_to_limit: [500, 500]) %>
+    </p>
+  <% end %>
+
   <p>
     <strong>Name:</strong>
     <%= contact.name %>

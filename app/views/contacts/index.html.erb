@@ -1,6 +1,8 @@
-<p style="color: green"><%= notice %></p>
+<% if notice.present? %>
+  <p style="color: green" data-controller="bridge--flash-message"><%= notice %></p>
+<% end %>
 
-<h1>Contacts</h1>
+<h1 class="hide-on-native">Contacts</h1>
 
 <div id="contacts">
   <% @contacts.each do |contact| %>
@@ -11,4 +13,12 @@
   <% end %>
 </div>
 
-<%= link_to "New contact", new_contact_path %>
+<%= link_to "New contact", new_contact_path, data: { controller: "bridge--nav-button", bridge_title: "New Contact" } %>
+
+
+<%= link_to "numbers", "/numbers" %>
+
+
+<% if turbo_native_app? %>
+  <h1>It has turbo native in the user agent</h1>
+<% end %>

@@ -1,12 +1,12 @@
 class ContactsController < ApplicationController
   before_action :set_contact, only: %i[ show edit update destroy ]
 
-  # GET /contacts or /contacts.json
+  # GET /contacts
   def index
     @contacts = Contact.all
   end
 
-  # GET /contacts/1 or /contacts/1.json
+  # GET /contacts/1
   def show
   end
 
@@ -19,42 +19,30 @@ class ContactsController < ApplicationController
   def edit
   end
 
-  # POST /contacts or /contacts.json
+  # POST /contacts
   def create
     @contact = Contact.new(contact_params)
 
-    respond_to do |format|
-      if @contact.save
-        format.html { redirect_to contact_url(@contact), notice: "Contact was successfully created." }
-        format.json { render :show, status: :created, location: @contact }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @contact.errors, status: :unprocessable_entity }
-      end
+    if @contact.save
+      redirect_to @contact, notice: "Contact was successfully created."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /contacts/1 or /contacts/1.json
+  # PATCH/PUT /contacts/1
   def update
-    respond_to do |format|
-      if @contact.update(contact_params)
-        format.html { redirect_to contact_url(@contact), notice: "Contact was successfully updated." }
-        format.json { render :show, status: :ok, location: @contact }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @contact.errors, status: :unprocessable_entity }
-      end
+    if @contact.update(contact_params)
+      redirect_to @contact, notice: "Contact was successfully updated.", status: :see_other
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
-  # DELETE /contacts/1 or /contacts/1.json
+  # DELETE /contacts/1
   def destroy
     @contact.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to contacts_url, notice: "Contact was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    recede_or_redirect_to contacts_url, notice: "Contact was successfully destroyed.", status: :see_other
   end
 
   private
@@ -65,6 +53,6 @@ class ContactsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def contact_params
-      params.require(:contact).permit(:name, :primary_email, :secondary_email)
+      params.require(:contact).permit(:name, :primary_email, :secondary_email, :avatar)
     end
 end

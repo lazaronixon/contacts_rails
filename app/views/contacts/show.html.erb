@@ -1,10 +1,16 @@
-<p style="color: green"><%= notice %></p>
+<% if notice.present? %>
+  <p style="color: green" data-controller="bridge--flash-message"><%= notice %></p>
+<% end %>
+
+<% content_for(:title, @contact.name) %>
 
 <%= render @contact %>
 
 <div>
-  <%= link_to "Edit this contact", edit_contact_path(@contact) %> |
-  <%= link_to "Back to contacts", contacts_path %>
+  <div class="hide-on-native">
+    <%= link_to "Edit this contact", edit_contact_path(@contact), data: { controller: "bridge--nav-button", bridge_title: "Edit" } %> |
+    <%= link_to "Back to contacts", contacts_path %>
+  </div>
 
-  <%= button_to "Destroy this contact", @contact, method: :delete %>
+  <%= link_to "Destroy this contact", @contact, "data-turbo-method": :delete %>
 </div>
